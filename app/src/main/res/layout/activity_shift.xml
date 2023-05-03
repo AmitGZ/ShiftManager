@@ -1,16 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ShiftActivity">
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
+
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="301dp"
+        android:layout_height="286dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="180dp"
+        android:src="@drawable/fingerprint2"
+        tools:layout_editor_absoluteX="63dp"
+        tools:layout_editor_absoluteY="267dp"
+        tools:srcCompat="@drawable/fingerprint2" />
+
+    <TextView
+        android:id="@+id/hName"
+        android:layout_width="210dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="110dp"
+        android:layout_marginTop="480dp"
+        android:text="Press to sign in "
+        android:textSize="25sp" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/shiftimage"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        app:menu="@menu/menu" />
+</RelativeLayout>
