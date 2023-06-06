@@ -49,9 +49,10 @@ public class SignUpActivity extends AppCompatActivity {
     private void signUp() {
         String username = usernameEditText.getText().toString();
         String password = passwordEditText.getText().toString();
-        
+
         // Check if the username and password are valid
-        if (isValidUsername(username) && isValidPassword(password)) {
+        if (isValidUsername(username) && isValidPassword(password))
+        {
             // Create a new user with the specified email and password
             firebaseAuth.createUserWithEmailAndPassword(username, password)
                     .addOnCompleteListener(this, task -> {
@@ -63,7 +64,7 @@ public class SignUpActivity extends AppCompatActivity {
                             // You can also navigate to another activity here if needed
                         } else {
                             // Sign-up failed
-                            FirebaseAuthException exception = (FirebaseAuthException) task.getException();
+                            Exception exception = task.getException();
                             Toast.makeText(SignUpActivity.this, "Sign-up failed: " + exception.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });

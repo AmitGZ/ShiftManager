@@ -9,6 +9,9 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -18,12 +21,19 @@ public class MainActivity extends AppCompatActivity
     private Button loginButton;
     private Button signUpButton;
     
+    private FirebaseAuth firebaseAuth;
+    
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     
         FirebaseApp.initializeApp(this);
+    
+        // Initialize Firebase Authentication
+        firebaseAuth = FirebaseAuth.getInstance();
+    
     
         usernameEditText = findViewById(R.id.usernameEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
@@ -33,22 +43,13 @@ public class MainActivity extends AppCompatActivity
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String username = usernameEditText.getText().toString();
-                String password = passwordEditText.getText().toString();
-                
-                // Validate the username and password here
-                if (username.equals("a") && password.equals("a")) {
-                    Toast.makeText(MainActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(MainActivity.this, ShiftActivity.class);
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(MainActivity.this, "Invalid username or password", Toast.LENGTH_SHORT).show();
-                }
+                login();
             }
         });
     
     
-        signUpButton.setOnClickListener(new View.OnClickListener() {
+        signUpButton.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View v) {
                 Toast.makeText(MainActivity.this, "Sign Up Screen", Toast.LENGTH_SHORT).show();
@@ -56,5 +57,30 @@ public class MainActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
+    }
+    
+    private void login()
+    {
+        String username = usernameEditText.getText().toString();
+        String password = passwordEditText.getText().toString();
+    
+        // Sign in the user with the specified email and password
+        firebaseAuth.signInWithEmailAndPassword(username, password)
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        // Login success
+                        FirebaseUser user = firebaseAuth.getCurrentUser();
+                        Toast.makeText(MainActivity.this, "Login successful! User ID: " + user.getUid(), Toast.LENGTH_SHORT).show();
+                    
+                        // You can navigate to another activity upon successful login
+                        Intent intent = new Intent(MainActivity.this, ShiftActivity.class);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        // Login failed
+                        Exception exception = task.getException();
+                        Toast.makeText(MainActivity.this, "Login failed: " + exception.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 }
