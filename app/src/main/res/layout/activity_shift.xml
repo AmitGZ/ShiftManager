@@ -6,23 +6,29 @@
     android:layout_height="match_parent"
     tools:context=".ShiftActivity">
 
+    <TextView
+        android:id="@+id/helloText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:text="Hello"
+        android:textSize="25sp" />
 
     <ImageButton
+        android:layout_centerHorizontal="true"
         android:id="@+id/imageButton"
         android:layout_width="301dp"
         android:layout_height="286dp"
-        android:layout_marginLeft="50dp"
         android:layout_marginTop="180dp"
         android:src="@drawable/fingerprint2"
-        tools:layout_editor_absoluteX="63dp"
-        tools:layout_editor_absoluteY="267dp"
         tools:srcCompat="@drawable/fingerprint2" />
 
     <TextView
         android:id="@+id/hName"
-        android:layout_width="210dp"
-        android:layout_height="40dp"
-        android:layout_marginLeft="110dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="480dp"
         android:text="Press to sign in "
         android:textSize="25sp" />

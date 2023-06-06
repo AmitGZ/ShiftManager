@@ -19,19 +19,29 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/usernameEditText"
+        android:id="@+id/emailEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Username"
+        android:hint="Email"
         android:inputType="text"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="62dp" />
 
     <EditText
+        android:id="@+id/usernameEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="User Name"
+        android:inputType="text"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="62dp" />
+
+
+    <EditText
         android:id="@+id/passwordEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Choose Password"
+        android:hint="Password"
         android:inputType="textPassword"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="114dp" />

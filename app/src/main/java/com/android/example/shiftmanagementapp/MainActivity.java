@@ -70,12 +70,11 @@ public class MainActivity extends AppCompatActivity
                     if (task.isSuccessful()) {
                         // Login success
                         FirebaseUser user = firebaseAuth.getCurrentUser();
-                        Toast.makeText(MainActivity.this, "Login successful! User ID: " + user.getUid(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "Login successful! User ID: " + user.getDisplayName(), Toast.LENGTH_SHORT).show();
                     
                         // You can navigate to another activity upon successful login
                         Intent intent = new Intent(MainActivity.this, ShiftActivity.class);
                         startActivity(intent);
-                        finish();
                     } else {
                         // Login failed
                         Exception exception = task.getException();

@@ -1,4 +1,5 @@
 package com.android.example.shiftmanagementapp;
+
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,11 +13,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 
 public class SignUpActivity extends AppCompatActivity {
     
     private EditText usernameEditText;
+    private EditText emailEditText;
     private EditText passwordEditText;
     private Button signUpButton;
     
@@ -26,14 +29,15 @@ public class SignUpActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-    
+        
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    
+        
         // Initialize Firebase Authentication
         firebaseAuth = FirebaseAuth.getInstance();
         
         // Initialize the views
         usernameEditText = findViewById(R.id.usernameEditText);
+        emailEditText = findViewById(R.id.emailEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
         signUpButton = findViewById(R.id.signUpButton);
         
@@ -48,17 +52,19 @@ public class SignUpActivity extends AppCompatActivity {
     
     private void signUp() {
         String username = usernameEditText.getText().toString();
+        String email = emailEditText.getText().toString();
         String password = passwordEditText.getText().toString();
-
-        // Check if the username and password are valid
-        if (isValidUsername(username) && isValidPassword(password))
-        {
+        
+        // Check if the username, email, and password are valid
+        if (isValidUsername(username) && isValidEmail(email) && isValidPassword(password)) {
             // Create a new user with the specified email and password
-            firebaseAuth.createUserWithEmailAndPassword(username, password)
+            firebaseAuth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this, task -> {
                         if (task.isSuccessful()) {
                             // Sign-up success
                             FirebaseUser user = firebaseAuth.getCurrentUser();
+                            // Set the username as a custom claim
+                            setUserUsername(username);
                             Toast.makeText(SignUpActivity.this, "Sign-up successful! User ID: " + user.getUid(), Toast.LENGTH_SHORT).show();
                             
                             // You can also navigate to another activity here if needed
@@ -71,7 +77,7 @@ public class SignUpActivity extends AppCompatActivity {
             
         } else {
             // Show an error message
-            Toast.makeText(this, "Invalid username or password.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Invalid username, email, or password.", Toast.LENGTH_SHORT).show();
         }
     }
     
@@ -79,15 +85,37 @@ public class SignUpActivity extends AppCompatActivity {
         return username.length() >= 3;
     }
     
+    private boolean isValidEmail(String email) {
+        // You can add your own email validation logic here if needed
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+    
     private boolean isValidPassword(String password) {
         return password.length() >= 6;
     }
     
+    private void setUserUsername(String username) {
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        if (user != null) {
+            user.updateProfile(new UserProfileChangeRequest.Builder()
+                            .setDisplayName(username)
+                            .build())
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            // Username set successfully
+                            Toast.makeText(SignUpActivity.this, "Username set successfully", Toast.LENGTH_SHORT).show();
+                        } else {
+                            // Failed to set username
+                            Exception exception = task.getException();
+                            Toast.makeText(SignUpActivity.this, "Failed to set username: " + exception.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }
+    }
+    
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        switch (item.getItemId())
-        {
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
                 return true;
