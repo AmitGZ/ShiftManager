@@ -8,21 +8,27 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.FirebaseApp;
+
 public class MainActivity extends AppCompatActivity
 {
     
     private EditText usernameEditText;
     private EditText passwordEditText;
     private Button loginButton;
+    private Button signUpButton;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
+    
+        FirebaseApp.initializeApp(this);
+    
         usernameEditText = findViewById(R.id.usernameEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
         loginButton = findViewById(R.id.loginButton);
+        signUpButton = findViewById(R.id.signUpButton);
         
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -38,6 +44,16 @@ public class MainActivity extends AppCompatActivity
                 } else {
                     Toast.makeText(MainActivity.this, "Invalid username or password", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+    
+    
+        signUpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "Sign Up Screen", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(MainActivity.this, SignUpActivity.class);
+                startActivity(intent);
             }
         });
     }
