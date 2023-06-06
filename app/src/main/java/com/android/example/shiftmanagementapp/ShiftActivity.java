@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,7 +16,8 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class ShiftActivity extends AppCompatActivity
 {
-    private FirebaseAuth firebaseAuth;
+    private FirebaseAuth _firebaseAuth;
+    private FirebaseUser _user;
     
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -25,12 +27,12 @@ public class ShiftActivity extends AppCompatActivity
     
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     
-        firebaseAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = firebaseAuth.getCurrentUser();
-        if (user != null)
+        _firebaseAuth = FirebaseAuth.getInstance();
+        _user = _firebaseAuth.getCurrentUser();
+        if (_user != null)
         {
             TextView helloText = findViewById(R.id.helloText);
-            helloText.setText("Hello " + user.getDisplayName());
+            helloText.setText("Hello " + _user.getDisplayName());
         }
         
         ImageButton myImageButton = findViewById(R.id.imageButton);
@@ -68,7 +70,9 @@ public class ShiftActivity extends AppCompatActivity
         switch (item.getItemId())
         {
             case android.R.id.home:
-                firebaseAuth.signOut();
+                _firebaseAuth.signOut();
+                if (_user != null)
+                    Toast.makeText(ShiftActivity.this, "Signed out: " + _user.getDisplayName(), Toast.LENGTH_SHORT).show();
                 onBackPressed();
                 return true;
             default:
