@@ -1,6 +1,7 @@
 package com.android.example.shiftmanagementapp;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -15,8 +16,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 public class HomeFragment extends Fragment {
     
+    DatabaseReference _databaseRef;
     private ImageButton activationButton;
     private Handler handler;
     private boolean buttonActivated;
@@ -37,7 +45,7 @@ public class HomeFragment extends Fragment {
         handler = new Handler();
     
         scaleAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.scale_animation);
-    
+        
         activationButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -66,9 +74,38 @@ public class HomeFragment extends Fragment {
         public void run() {
             // Activate the button
             buttonActivated = true;
-            // Perform any desired action when the button is activated
-            // For example, enable another component or trigger an event
+            
             Toast.makeText(getActivity(), "Click", Toast.LENGTH_SHORT).show();
+    
+            String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            // Get the current timestamp
+            long timestamp = System.currentTimeMillis();
+    
+            // Create a new data object with relevant information
+            UserData userData = new UserData(userId, timestamp);
+    
+            _databaseRef = FirebaseDatabase.getInstance().getReference();
+    
+            // Save the data to the Firebase Realtime Database
+            _databaseRef.push().setValue(userData)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            // Data saved successfully
+                            System.out.println("\n\n\nSUCCESS\n\n\n\n");
+                            Toast.makeText(getActivity(), "Data saved!", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            // Error occurred while saving data
+                            System.out.println("\n\n\nFALIURE\n\n\n\n");
+                            System.out.println("FAIL");
+                            Toast.makeText(getActivity(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Log.e("Firebase", "Data save failed", e);
+                        }
+                    });
         }
     };
 }
