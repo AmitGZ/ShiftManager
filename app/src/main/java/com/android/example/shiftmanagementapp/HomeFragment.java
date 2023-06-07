@@ -86,6 +86,30 @@ public class HomeFragment extends Fragment {
     
             _databaseRef = FirebaseDatabase.getInstance().getReference();
     
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference myRef = database.getReference("users");
+            myRef.setValue("Hello, World!")
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            // Data saved successfully
+                            System.out.println("\n\n\nSUCCESS\n\n\n\n");
+                            Toast.makeText(getActivity(), "Data saved!", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            // Error occurred while saving data
+                            System.out.println("\n\n\nFALIURE\n\n\n\n");
+                            System.out.println("FAIL");
+                            Toast.makeText(getActivity(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Log.e("Firebase", "Data save failed", e);
+                        }
+                    });
+            
+            if (true) return;
+            
             // Save the data to the Firebase Realtime Database
             _databaseRef.push().setValue(userData)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
