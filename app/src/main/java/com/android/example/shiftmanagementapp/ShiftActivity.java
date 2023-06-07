@@ -53,7 +53,6 @@ public class ShiftActivity extends AppCompatActivity
         
         bottomNavigationView.setOnNavigationItemSelectedListener(item ->
         {
-            int x = item.getItemId();
             switch (item.getItemId()) {
                 case R.id.home_item:
                     openFragment(_homeFragment);
