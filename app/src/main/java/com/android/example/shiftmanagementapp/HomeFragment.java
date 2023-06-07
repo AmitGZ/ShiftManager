@@ -1,4 +1,5 @@
 package com.android.example.shiftmanagementapp;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -19,18 +20,26 @@ import androidx.fragment.app.Fragment;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
 
 public class HomeFragment extends Fragment {
     
     DatabaseReference _databaseRef;
     private ImageButton activationButton;
     private Handler handler;
-    private boolean buttonActivated;
     private Animation scaleAnimation;
     private static final int DELAY_MILLIS = 1000;
-    
+    private String _userId;
+    private static SimpleDateFormat _sdf;
     
     public HomeFragment() {
         // Required empty public constructor
@@ -64,6 +73,10 @@ public class HomeFragment extends Fragment {
                 return false;
             }
         });
+    
+        // Define the desired date format
+        _sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        _sdf.setTimeZone(TimeZone.getTimeZone("GMT+06:30"));
         
         // Inflate the layout for this fragment
         return view;
@@ -71,44 +84,14 @@ public class HomeFragment extends Fragment {
     
     private Runnable activationRunnable = new Runnable() {
         @Override
-        public void run() {
-            // Activate the button
-            buttonActivated = true;
-            
-            Toast.makeText(getActivity(), "Click", Toast.LENGTH_SHORT).show();
-    
-            String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        public void run()
+        {
             // Get the current timestamp
             long timestamp = System.currentTimeMillis();
     
             // Create a new data object with relevant information
-            UserData userData = new UserData(userId, timestamp);
-    
+            UserData userData = new UserData(_userId, timestamp);
             _databaseRef = FirebaseDatabase.getInstance().getReference();
-    
-            FirebaseDatabase database = FirebaseDatabase.getInstance();
-            DatabaseReference myRef = database.getReference("users");
-            myRef.setValue("Hello, World!")
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            // Data saved successfully
-                            System.out.println("\n\n\nSUCCESS\n\n\n\n");
-                            Toast.makeText(getActivity(), "Data saved!", Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            // Error occurred while saving data
-                            System.out.println("\n\n\nFALIURE\n\n\n\n");
-                            System.out.println("FAIL");
-                            Toast.makeText(getActivity(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                            Log.e("Firebase", "Data save failed", e);
-                        }
-                    });
-            
-            if (true) return;
             
             // Save the data to the Firebase Realtime Database
             _databaseRef.push().setValue(userData)
@@ -116,7 +99,6 @@ public class HomeFragment extends Fragment {
                         @Override
                         public void onSuccess(Void aVoid) {
                             // Data saved successfully
-                            System.out.println("\n\n\nSUCCESS\n\n\n\n");
                             Toast.makeText(getActivity(), "Data saved!", Toast.LENGTH_SHORT).show();
                         }
                     })
@@ -124,12 +106,42 @@ public class HomeFragment extends Fragment {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             // Error occurred while saving data
-                            System.out.println("\n\n\nFALIURE\n\n\n\n");
-                            System.out.println("FAIL");
                             Toast.makeText(getActivity(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                             Log.e("Firebase", "Data save failed", e);
                         }
                     });
+    
+    
+    
+    
+            // Handled retrieved data
+            _userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    
+            DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
+            Query query = databaseRef.orderByChild("userId").equalTo(_userId);
+    
+            query.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    // Handle the retrieved data
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        UserData data = snapshot.getValue(UserData.class);
+                        
+                        // Format the date to a string
+                        String formattedDate = _sdf.format(new Date(timestamp));
+    
+                        // Use the formatted date as needed
+                        System.out.println("Formatted Date: " + formattedDate);
+                    }
+                }
+        
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    // Handle the error case
+                    Toast.makeText(getActivity(), "Error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+    
         }
     };
 }
