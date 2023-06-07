@@ -1,0 +1,27 @@
+<!-- fragment_home.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/hName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:text="Press to sign in "
+        android:textSize="25sp" />
+
+    <ImageButton
+        android:layout_centerHorizontal="true"
+        android:id="@+id/imageButton"
+        android:layout_width="301dp"
+        android:layout_height="286dp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/fingerprint2"
+        tools:srcCompat="@drawable/fingerprint2" />
+
+</LinearLayout>

@@ -9,6 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -19,14 +20,20 @@ public class ShiftActivity extends AppCompatActivity
     private FirebaseAuth _firebaseAuth;
     private FirebaseUser _user;
     
+    private HomeFragment _homeFragment;
+    private HelpFragment _helpFragment;
+    private SettingsFragment _settingsFragment;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shift);
     
+        // Home as up button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     
+        // Setting Hello User text
         _firebaseAuth = FirebaseAuth.getInstance();
         _user = _firebaseAuth.getCurrentUser();
         if (_user != null)
@@ -34,34 +41,39 @@ public class ShiftActivity extends AppCompatActivity
             TextView helloText = findViewById(R.id.helloText);
             helloText.setText("Hello " + _user.getDisplayName());
         }
-        
-        ImageButton myImageButton = findViewById(R.id.imageButton);
-        myImageButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                System.out.println("Click");
-            }
-        });
+    
+        // Setting up bottom navigation
+        _homeFragment = new HomeFragment();
+        _helpFragment = new HelpFragment();
+        _settingsFragment = new SettingsFragment();
     
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setSelectedItemId(R.id.home_item);
+        openFragment(_homeFragment);
+        
         bottomNavigationView.setOnNavigationItemSelectedListener(item ->
         {
+            int x = item.getItemId();
             switch (item.getItemId()) {
                 case R.id.home_item:
-                    // Handle click for home item
+                    openFragment(_homeFragment);
                     return true;
-                case R.id.search_item:
-                    // Handle click for search item
+                case R.id.help_item:
+                    openFragment(_helpFragment);
                     return true;
-                case R.id.profile_item:
-                    // Handle click for profile item
+                case R.id.settings_item:
+                    openFragment(_settingsFragment);
                     return true;
                 default:
                     return false;
             }
         });
+    }
+    
+    private void openFragment(Fragment fragment) {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragmentContainer, fragment)
+                .commit();
     }
     
     @Override

@@ -2,19 +2,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/home_item"
+        android:id="@+id/help_item"
         android:icon="@drawable/ic_help"
         android:title="Help"
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/search_item"
+        android:id="@+id/home_item"
         android:icon="@drawable/ic_home"
         android:title="Home"
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/profile_item"
+        android:id="@+id/settings_item"
         android:icon="@drawable/ic_settings"
         android:title="Settings"
         app:showAsAction="ifRoom" />
