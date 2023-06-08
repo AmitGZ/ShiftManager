@@ -96,7 +96,7 @@ public class ShiftActivity extends AppCompatActivity
     {
         // Setting up bottom navigation
         _homeFragment = new HomeFragment(_user, _databaseRef);
-        _helpFragment = new HelpFragment();
+        _helpFragment = new HelpFragment(_user, _databaseRef);
         _settingsFragment = new SettingsFragment();
     
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
