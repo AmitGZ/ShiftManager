@@ -32,7 +32,7 @@ public class ShiftActivity extends AppCompatActivity
     private DatabaseReference _databaseRef;
     
     private HomeFragment _homeFragment;
-    private HelpFragment _helpFragment;
+    private ListFragment _listFragment;
     private SettingsFragment _settingsFragment;
     
     static public List<UserData> DataList;
@@ -96,7 +96,7 @@ public class ShiftActivity extends AppCompatActivity
     {
         // Setting up bottom navigation
         _homeFragment = new HomeFragment(_user, _databaseRef);
-        _helpFragment = new HelpFragment(_user, _databaseRef);
+        _listFragment = new ListFragment(_user, _databaseRef);
         _settingsFragment = new SettingsFragment();
     
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -109,8 +109,8 @@ public class ShiftActivity extends AppCompatActivity
                 case R.id.home_item:
                     openFragment(_homeFragment);
                     return true;
-                case R.id.help_item:
-                    openFragment(_helpFragment);
+                case R.id.list_item:
+                    openFragment(_listFragment);
                     return true;
                 case R.id.settings_item:
                     openFragment(_settingsFragment);

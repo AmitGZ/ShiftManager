@@ -24,7 +24,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.jetbrains.annotations.NotNull;
 
-public class HelpFragment extends Fragment {
+public class ListFragment extends Fragment {
     
     private LinearLayout _container;
     private Button _removeButton;
@@ -32,7 +32,7 @@ public class HelpFragment extends Fragment {
     private final FirebaseUser _user;
     private final DatabaseReference _databaseRef;
     
-    public HelpFragment (@NotNull FirebaseUser user, @NotNull DatabaseReference databaseRef)
+    public ListFragment (@NotNull FirebaseUser user, @NotNull DatabaseReference databaseRef)
     {
         _user = user;
         _databaseRef = databaseRef;
@@ -42,7 +42,7 @@ public class HelpFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_help, _container, false);
+        View view = inflater.inflate(R.layout.fragment_list, _container, false);
         
         _container = view.findViewById(R.id.container);
     

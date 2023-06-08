@@ -2,9 +2,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/help_item"
-        android:icon="@drawable/ic_help"
-        android:title="Help"
+        android:id="@+id/list_item"
+        android:icon="@drawable/ic_baseline_format_list_bulleted_24"
+        android:title="List"
         app:showAsAction="ifRoom" />
 
     <item
