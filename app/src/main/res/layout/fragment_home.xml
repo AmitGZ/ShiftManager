@@ -7,12 +7,12 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/hName"
+        android:id="@+id/startStopText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="40dp"
-        android:text="Press to sign in "
+        android:text="Hold to start shift "
         android:textSize="25sp" />
 
     <ImageButton
@@ -23,5 +23,14 @@
         android:layout_marginTop="40dp"
         android:src="@drawable/fingerprint2"
         tools:srcCompat="@drawable/fingerprint2" />
+
+    <TextView
+        android:id="@+id/timeInShift"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:text=""
+        android:textSize="25sp" />
 
 </LinearLayout>
