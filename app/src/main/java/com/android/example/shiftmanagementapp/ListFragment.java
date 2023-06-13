@@ -30,12 +30,12 @@ public class ListFragment extends Fragment {
     private Button _removeButton;
     
     private final FirebaseUser _user;
-    private final DatabaseReference _databaseRef;
+    private final DatabaseReference _userDatabaseRef;
     
     public ListFragment (@NotNull FirebaseUser user, @NotNull DatabaseReference databaseRef)
     {
         _user = user;
-        _databaseRef = databaseRef;
+        _userDatabaseRef = databaseRef;
     }
     
     @Nullable
@@ -68,8 +68,8 @@ public class ListFragment extends Fragment {
                 Toast.makeText(getActivity(), "Removed" + start, Toast.LENGTH_SHORT).show();
                 _container.removeView(blockView);
     
-                Query queryStart = _databaseRef.orderByChild("timestamp").equalTo(start);
-                Query queryEnd = _databaseRef.orderByChild("timestamp").equalTo(end);
+                Query queryStart = _userDatabaseRef.orderByChild("timestamp").equalTo(start);
+                Query queryEnd = _userDatabaseRef.orderByChild("timestamp").equalTo(end);
     
                 // Attach a ValueEventListener to the query for a single event
                 queryStart.addListenerForSingleValueEvent(new RemoveEventListener(getActivity()));

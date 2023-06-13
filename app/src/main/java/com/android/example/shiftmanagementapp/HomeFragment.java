@@ -1,5 +1,4 @@
 package com.android.example.shiftmanagementapp;
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -9,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,24 +16,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.google.android.gms.common.util.DataUtils;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 
 import org.jetbrains.annotations.NotNull;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.TimeZone;
 
 public class HomeFragment extends Fragment {
     
@@ -51,12 +37,12 @@ public class HomeFragment extends Fragment {
     private boolean _isInShift;
     
     private final FirebaseUser _user;
-    private final DatabaseReference _databaseRef;
+    private final DatabaseReference _userDatabaseRef;
     
     public HomeFragment(@NotNull FirebaseUser user, @NotNull DatabaseReference databaseRef)
     {
         _user = user;
-        _databaseRef = databaseRef;
+        _userDatabaseRef = databaseRef;
     }
     
     @Nullable
@@ -83,7 +69,7 @@ public class HomeFragment extends Fragment {
             UserData userData = new UserData(_user.getUid(), System.currentTimeMillis());
             
             // Save the data to the Firebase Realtime Database
-            _databaseRef.push().setValue(userData)
+            _userDatabaseRef.child("logs").push().setValue(userData)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {

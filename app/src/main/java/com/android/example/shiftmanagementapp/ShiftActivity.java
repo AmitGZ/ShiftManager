@@ -2,9 +2,6 @@ package com.android.example.shiftmanagementapp;
 
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,7 +26,7 @@ public class ShiftActivity extends AppCompatActivity
 {
     private FirebaseAuth _firebaseAuth;
     private FirebaseUser _user;
-    private DatabaseReference _databaseRef;
+    private DatabaseReference _userDatabaseRef;
     
     private HomeFragment _homeFragment;
     private ListFragment _listFragment;
@@ -51,8 +48,8 @@ public class ShiftActivity extends AppCompatActivity
         // Setting User database
         _firebaseAuth = FirebaseAuth.getInstance();
         _user = _firebaseAuth.getCurrentUser();
-        _databaseRef = FirebaseDatabase.getInstance().getReference().child("users").child(_user.getUid());;
-        if (_user == null || _firebaseAuth == null || _databaseRef == null)
+        _userDatabaseRef = FirebaseDatabase.getInstance().getReference().child("users").child(_user.getUid());;
+        if (_user == null || _firebaseAuth == null || _userDatabaseRef == null)
         {
             Toast.makeText(this, "User authentication failed", Toast.LENGTH_SHORT).show();
             finish(); // Finish the activity
@@ -95,9 +92,9 @@ public class ShiftActivity extends AppCompatActivity
     private void setBottomNavigation()
     {
         // Setting up bottom navigation
-        _homeFragment = new HomeFragment(_user, _databaseRef);
-        _listFragment = new ListFragment(_user, _databaseRef);
-        _settingsFragment = new SettingsFragment();
+        _homeFragment = new HomeFragment(_user, _userDatabaseRef);
+        _listFragment = new ListFragment(_user, _userDatabaseRef);
+        _settingsFragment = new SettingsFragment(_user, _userDatabaseRef);
     
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.home_item);
@@ -123,7 +120,7 @@ public class ShiftActivity extends AppCompatActivity
     
     private void setDatabaseQuery()
     {
-        Query query = _databaseRef.orderByChild("userId");
+        Query query = _userDatabaseRef.child("logs").orderByChild("userId");
     
         query.addValueEventListener(new ValueEventListener() {
             @Override
@@ -131,7 +128,6 @@ public class ShiftActivity extends AppCompatActivity
             {
                 // Handle the retrieved data
                 DataList.clear();
-                long lastTimeStamp = 0;
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     UserData data = snapshot.getValue(UserData.class);
                     DataList.add(data);
