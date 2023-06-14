@@ -32,6 +32,7 @@ public class ShiftActivity extends AppCompatActivity
     private ListFragment _listFragment;
     private SettingsFragment _settingsFragment;
     
+    static public double HourlyRate;
     static public List<UserData> DataList;
     
     @Override
@@ -41,6 +42,7 @@ public class ShiftActivity extends AppCompatActivity
         setContentView(R.layout.activity_shift);
     
         DataList = new ArrayList<UserData>();
+        HourlyRate = 30.0;
         
         // Home as up button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

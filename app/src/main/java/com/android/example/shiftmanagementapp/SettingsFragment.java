@@ -24,7 +24,6 @@ import org.jetbrains.annotations.NotNull;
 public class SettingsFragment extends Fragment {
     
     private EditText _hourlyRateInput;
-    private double _hourlyRate;
     
     private final FirebaseUser _user;
     private final DatabaseReference _userDatabaseRef;
@@ -33,18 +32,17 @@ public class SettingsFragment extends Fragment {
     {
         _user = user;
         _userDatabaseRef = databaseRef;
-        _hourlyRate = 30.0;
     
         // Set Hourly Rate
-        _userDatabaseRef.child("HourlyRate").addListenerForSingleValueEvent(new ValueEventListener() {
+        _userDatabaseRef.child("hourlyRate").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     // The "HourlyRate" child exists in the database
-                    _hourlyRate = dataSnapshot.getValue(Double.class);
+                    ShiftActivity.HourlyRate = dataSnapshot.getValue(Double.class);
                 } else {
                     // The "HourlyRate" child does not exist in the database
-                    _userDatabaseRef.child("HourlyRate").setValue(_hourlyRate);
+                    _userDatabaseRef.child("hourlyRate").setValue(ShiftActivity.HourlyRate);
                 }
             }
             @Override
@@ -62,7 +60,7 @@ public class SettingsFragment extends Fragment {
     
         _hourlyRateInput = view.findViewById(R.id.hourlyRate);
         _hourlyRateInput.setFilters(new InputFilter[] { new InputFilter.AllCaps(), new InputFilter.LengthFilter(10) });
-        _hourlyRateInput.setText(String.valueOf(_hourlyRate));
+        _hourlyRateInput.setText(String.valueOf(ShiftActivity.HourlyRate));
     
         _hourlyRateInput.addTextChangedListener(new TextWatcher() {
             @Override
@@ -76,7 +74,7 @@ public class SettingsFragment extends Fragment {
                 // Validate the input
                 if (!input.isEmpty()) {
                     try {
-                        _hourlyRate = Double.parseDouble(input);
+                        ShiftActivity.HourlyRate = Double.parseDouble(input);
                     } catch (NumberFormatException e) {
                         Toast.makeText(getActivity(), "Not a number!", Toast.LENGTH_SHORT).show();
                     }
@@ -85,7 +83,7 @@ public class SettingsFragment extends Fragment {
         
             @Override
             public void afterTextChanged(Editable editable) {
-                _userDatabaseRef.child("HourlyRate").setValue(_hourlyRate);
+                _userDatabaseRef.child("hourlyRate").setValue(ShiftActivity.HourlyRate);
             }
         });
         

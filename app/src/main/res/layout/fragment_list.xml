@@ -1,16 +1,33 @@
-<!-- fragment_list.xml -->
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/container"
+    <ScrollView
         android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <!-- Contents of the ScrollView go here -->
+        </LinearLayout>
+
+    </ScrollView>
+
+    <TextView
+        android:id="@+id/salary"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:text="Salary"
+        android:textSize="30sp"
+        android:background="#6200EE"
+        android:textColor="#FFFFFF"
+        android:padding="10dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp" />
 
-        <!-- Add your other views here -->
-
-    </LinearLayout>
-
-</ScrollView>
+</LinearLayout>
