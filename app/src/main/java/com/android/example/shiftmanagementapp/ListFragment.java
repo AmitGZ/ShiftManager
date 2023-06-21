@@ -30,7 +30,6 @@ import org.w3c.dom.Text;
 public class ListFragment extends Fragment {
     
     private LinearLayout _container;
-    private Button _removeButton;
     private TextView _salaryText;
     
     private final FirebaseUser _user;
@@ -50,12 +49,11 @@ public class ListFragment extends Fragment {
         
         _container = view.findViewById(R.id.container);
         _salaryText = view.findViewById(R.id.salary);
-        
-        showDataList();
+    
+        refreshDataList();
         
         return view;
     }
-    
     
     private void addBlock(long start, long end)
     {
@@ -82,7 +80,8 @@ public class ListFragment extends Fragment {
             }
         });
     }
-    private void showDataList()
+    
+    private void refreshDataList()
     {
         long totalWorkTime = 0;
         _container.removeAllViews();
