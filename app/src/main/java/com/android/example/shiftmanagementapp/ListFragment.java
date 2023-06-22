@@ -69,14 +69,14 @@ public class ListFragment extends Fragment {
             public void onClick(View v)
             {
                 Toast.makeText(getActivity(), "Removed" + start, Toast.LENGTH_SHORT).show();
-                _container.removeView(blockView);
+                //_container.removeView(blockView);
     
-                Query queryStart = _userDatabaseRef.orderByChild("timestamp").equalTo(start);
-                Query queryEnd = _userDatabaseRef.orderByChild("timestamp").equalTo(end);
+                Query queryStart = _userDatabaseRef.child("logs").orderByChild("timestamp").equalTo(start);
     
                 // Attach a ValueEventListener to the query for a single event
                 queryStart.addListenerForSingleValueEvent(new RemoveEventListener(getActivity()));
-                queryEnd.addListenerForSingleValueEvent(new RemoveEventListener(getActivity()));
+    
+                refreshDataList();
             }
         });
     }
@@ -87,11 +87,11 @@ public class ListFragment extends Fragment {
         _container.removeAllViews();
         for (int i = 0; i < ShiftActivity.DataList.size() - 1; i += 2)
         {
-            long start = ShiftActivity.DataList.get(i).getTimestamp();
-            long end =   ShiftActivity.DataList.get(i + 1).getTimestamp();
-            if (end < start) continue;
-            addBlock(start, end);
-            totalWorkTime += end - start;
+            //long start = ShiftActivity.DataList.get(i).getTimestamp();
+            //long end =   ShiftActivity.DataList.get(i + 1).getTimestamp();
+            //if (end < start) continue;
+            //addBlock(start, end);
+            //totalWorkTime += end - start;
         }
         _salaryText.setText("Salary: " + String.format("%.2f", totalWorkTime * ShiftActivity.HourlyRate / (3600 * 1000)) + " $");
     }

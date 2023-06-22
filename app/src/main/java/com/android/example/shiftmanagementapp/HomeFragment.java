@@ -34,7 +34,6 @@ public class HomeFragment extends Fragment {
     private TextView _startStopText;
     private TextView _timeInShift;
     private long _lastPressed;
-    private boolean _isInShift;
     
     private final FirebaseUser _user;
     private final DatabaseReference _userDatabaseRef;
@@ -65,26 +64,37 @@ public class HomeFragment extends Fragment {
         @Override
         public void run()
         {
-            // Create a new data object with relevant information
-            UserData userData = new UserData(_user.getUid(), System.currentTimeMillis());
-            
-            // Save the data to the Firebase Realtime Database
-            _userDatabaseRef.child("logs").push().setValue(userData)
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            // Data saved successfully
-                            Toast.makeText(getActivity(), "Data saved!", Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            // Error occurred while saving data
-                            Toast.makeText(getActivity(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                            Log.e("Firebase", "Data save failed", e);
-                        }
-                    });
+            if (ShiftActivity.LastPressed != 0)
+            {
+                // Create a new data object with relevant information
+                ShiftData shiftData = new ShiftData(ShiftActivity.LastPressed, System.currentTimeMillis(), ShiftActivity.HourlyRate);
+    
+                // Save the data to the Firebase Realtime Database
+                _userDatabaseRef.child("logs").push().setValue(shiftData)
+                        .addOnSuccessListener(new OnSuccessListener<Void>()
+                {
+                    @Override
+                    public void onSuccess(Void aVoid)
+                    {
+                        // Data saved successfully
+                        _userDatabaseRef.child("LastPressed").setValue(0);
+                        Toast.makeText(getActivity(), "Data saved!", Toast.LENGTH_SHORT).show();
+                    }
+                }).addOnFailureListener(new OnFailureListener()
+                {
+                    @Override
+                    public void onFailure(@NonNull Exception e)
+                    {
+                        // Error occurred while saving data
+                        Toast.makeText(getActivity(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Log.e("Firebase", "Data save failed", e);
+                    }
+                });
+            }
+            else
+            {
+                _userDatabaseRef.child("LastPressed").setValue(System.currentTimeMillis());
+            }
         }
     };
     
@@ -123,16 +133,13 @@ public class HomeFragment extends Fragment {
         Runnable updateRunnable = new Runnable() {
             @Override
             public void run() {
-                _isInShift = (ShiftActivity.DataList.size() % 2 == 1);
-                _lastPressed = ShiftActivity.DataList.size() > 0 ? ShiftActivity.DataList.get(ShiftActivity.DataList.size() - 1).getTimestamp() : 0;
-    
                 // Format the time elapsed as desired (e.g., minutes:seconds)
-                String formattedTime = DateUtils.getTimeDifference(_lastPressed, System.currentTimeMillis());
+                String formattedTime = DateUtils.getTimeDifference(ShiftActivity.LastPressed, System.currentTimeMillis());
             
                 // Update the TextView with the formatted time
-                _timeInShift.setText(_isInShift ? formattedTime : "");
+                _timeInShift.setText((ShiftActivity.LastPressed == 0) ? "" : formattedTime);
     
-                _startStopText.setText(_isInShift ? "Hold to end shift" : "Hold to start shift");
+                _startStopText.setText((ShiftActivity.LastPressed == 0) ? "Hold to start shift" : "Hold to end shift");
     
                 // Schedule the next update
                 _timeHandler.postDelayed(this, 10);

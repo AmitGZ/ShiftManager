@@ -33,7 +33,8 @@ public class ShiftActivity extends AppCompatActivity
     private SettingsFragment _settingsFragment;
     
     static public double HourlyRate;
-    static public List<UserData> DataList;
+    static public List<ShiftData> DataList;
+    static public long LastPressed;
     
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -41,8 +42,9 @@ public class ShiftActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shift);
     
-        DataList = new ArrayList<UserData>();
+        DataList = new ArrayList<ShiftData>();
         HourlyRate = 30.0;
+        LastPressed = 0;
         
         // Home as up button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -66,7 +68,9 @@ public class ShiftActivity extends AppCompatActivity
         setBottomNavigation();
     
         // Setting database on data change
-        setDatabaseQuery();
+        setLogsQuery();
+        
+        setShiftQuery();
     }
     
     private void openFragment(Fragment fragment) {
@@ -120,9 +124,9 @@ public class ShiftActivity extends AppCompatActivity
         });
     }
     
-    private void setDatabaseQuery()
+    private void setLogsQuery()
     {
-        Query query = _userDatabaseRef.child("logs").orderByChild("userId");
+        Query query = _userDatabaseRef.child("logs").orderByChild("timestamp");
     
         query.addValueEventListener(new ValueEventListener() {
             @Override
@@ -131,7 +135,7 @@ public class ShiftActivity extends AppCompatActivity
                 // Handle the retrieved data
                 DataList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    UserData data = snapshot.getValue(UserData.class);
+                    ShiftData data = snapshot.getValue(ShiftData.class);
                     DataList.add(data);
                 }
             }
@@ -143,4 +147,25 @@ public class ShiftActivity extends AppCompatActivity
             }
         });
     }
+    
+    private void setShiftQuery()
+    {
+        _userDatabaseRef.child("LastPressed").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    // The "HourlyRate" child exists in the database
+                    ShiftActivity.LastPressed = dataSnapshot.getValue(Long.class);
+                } else {
+                    // The "HourlyRate" child does not exist in the database
+                    _userDatabaseRef.child("LastPressed").setValue((long)0);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle the error case if the listener is canceled
+            }
+        });
+    }
+    
 }
