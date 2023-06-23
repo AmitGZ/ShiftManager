@@ -4,17 +4,11 @@ public class ShiftData {
     private long _start;
     private long _end;
     private double _hourlyRate;
-    private float _shiftSalary;
+    private double _shiftSalary;
+    private String _key;
     
     public ShiftData() {
         // Default constructor
-    }
-    
-    public ShiftData(long start, double hourlyRate) {
-        _start = start;
-        _end = -1; // Indicates the shift hasn't ended yet
-        _hourlyRate = hourlyRate;
-        _shiftSalary = 0;
     }
     
     public ShiftData(long start, long end, double hourlyRate) {
@@ -26,23 +20,29 @@ public class ShiftData {
     
     private void CalculateShiftSalary()
     {
-        _shiftSalary = (float)_hourlyRate * ((float)(_end - _start) / (3600.0F * 1000.0F));
+        _shiftSalary = _hourlyRate * ((double)(_end - _start) / (3600.0D * 1000.0D));
     }
     
-    public void EndShift(long end)
-    {
-        _end = end;
-        CalculateShiftSalary();
-    }
-    
-    // Getters and setters (if needed)
-    
-    // Example getters
-    public long getStart() {
-        return _start;
-    }
+    // Getters
+    public long getStart() { return _start; }
     
     public long getEnd() {
         return _end;
     }
+    
+    public double getHourlyRate() { return _hourlyRate; }
+    
+    public double getShiftSalary() { return _shiftSalary; }
+    
+    public String getKey() { return _key; }
+    
+    public void setStart(long start) { _start = start; }
+    
+    public void setEnd(long end) { _end = end; }
+    
+    public void setHourlyRate(double hourlyRate) { _hourlyRate = hourlyRate; }
+    
+    public void setShiftSalary(double shiftSalary) { _shiftSalary = shiftSalary; }
+    
+    public void setKey(String key) { _key = key; }
 }

@@ -55,88 +55,44 @@ public class ListFragment extends Fragment {
         return view;
     }
     
-    private void addBlock(long start, long end)
+    private void addBlock(ShiftData shiftData)
     {
         View blockView = getLayoutInflater().inflate(R.layout.item_block, _container, false);
         TextView textView = blockView.findViewById(R.id.textBlock);
-        textView.setText("Start: " + DateUtils.formatDateTime(start) + "\n" + "End:   " + DateUtils.formatDateTime(end));
+        textView.setText("Start: " + DateUtils.formatDateTime(shiftData.getStart()) + "\n" + "End:   " + DateUtils.formatDateTime(shiftData.getEnd()));
         _container.addView(blockView);
     
-        Button remove = blockView.findViewById(R.id.removeBlock);
-        remove.setOnClickListener(new View.OnClickListener()
+        Button removeButton = blockView.findViewById(R.id.removeBlock);
+        removeButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                Toast.makeText(getActivity(), "Removed" + start, Toast.LENGTH_SHORT).show();
-                //_container.removeView(blockView);
-    
-                Query queryStart = _userDatabaseRef.child("logs").orderByChild("timestamp").equalTo(start);
-    
-                // Attach a ValueEventListener to the query for a single event
-                queryStart.addListenerForSingleValueEvent(new RemoveEventListener(getActivity()));
-    
-                refreshDataList();
+                _userDatabaseRef.child("logs").child(shiftData.getKey()).removeValue(new DatabaseReference.CompletionListener() {
+                    @Override
+                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                        if (databaseError != null) {
+                            System.out.println("Data could not be removed. " + databaseError.getMessage());
+                        } else {
+                            System.out.println("Data removed successfully.");
+                            refreshDataList();
+                        }
+                    }
+                });
             }
         });
     }
     
     private void refreshDataList()
     {
-        long totalWorkTime = 0;
+        double totalSalary = 0.0D;
         _container.removeAllViews();
-        for (int i = 0; i < ShiftActivity.DataList.size() - 1; i += 2)
+        for (int i = 0; i < ShiftActivity.DataList.size(); i++)
         {
-            //long start = ShiftActivity.DataList.get(i).getTimestamp();
-            //long end =   ShiftActivity.DataList.get(i + 1).getTimestamp();
-            //if (end < start) continue;
-            //addBlock(start, end);
-            //totalWorkTime += end - start;
+            addBlock(ShiftActivity.DataList.get(i));
+            totalSalary += ShiftActivity.DataList.get(i).getShiftSalary();
         }
-        _salaryText.setText("Salary: " + String.format("%.2f", totalWorkTime * ShiftActivity.HourlyRate / (3600 * 1000)) + " $");
+        _salaryText.setText("Salary: " + String.format("%.2f", totalSalary) + " $");
     }
     
-}
-
-// Helper class to Remove event listener from database
-class RemoveEventListener implements ValueEventListener
-{
-    Activity _activity;
-    
-    RemoveEventListener(Activity activity)
-    {
-        _activity = activity;
-    }
-    
-    @Override
-    public void onDataChange(@NonNull DataSnapshot dataSnapshot)
-    {
-        // Iterate through the matching items and delete them
-        for (DataSnapshot itemSnapshot : dataSnapshot.getChildren())
-        {
-            itemSnapshot.getRef().removeValue().addOnSuccessListener(new OnSuccessListener<Void>()
-            {
-                @Override
-                public void onSuccess(Void aVoid)
-                {
-                    // Item removal successful
-                    Toast.makeText(_activity, "Removed from database successfully", Toast.LENGTH_SHORT).show();
-                }
-            }).addOnFailureListener(new OnFailureListener()
-            {
-                @Override
-                public void onFailure(@NonNull Exception e)
-                {
-                    // Item removal failed
-                    Toast.makeText(_activity, "Failed to removed from database: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
-    }
-    
-    @Override
-    public void onCancelled(@NonNull DatabaseError error)
-    {
-        Toast.makeText(_activity, "Failed to removed from database: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-    }
 }

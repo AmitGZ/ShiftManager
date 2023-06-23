@@ -136,6 +136,7 @@ public class ShiftActivity extends AppCompatActivity
                 DataList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     ShiftData data = snapshot.getValue(ShiftData.class);
+                    data.setKey(snapshot.getKey());
                     DataList.add(data);
                 }
             }

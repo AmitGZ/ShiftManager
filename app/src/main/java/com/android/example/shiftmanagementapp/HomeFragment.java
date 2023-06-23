@@ -27,13 +27,12 @@ public class HomeFragment extends Fragment {
     
     private static final int DELAY_MILLIS = 1000;
     
-    private ImageButton activationButton;
+    private ImageButton _activationButton;
     private Handler _buttonHandler;
     private Handler _timeHandler;
     private Animation scaleAnimation;
     private TextView _startStopText;
     private TextView _timeInShift;
-    private long _lastPressed;
     
     private final FirebaseUser _user;
     private final DatabaseReference _userDatabaseRef;
@@ -101,11 +100,11 @@ public class HomeFragment extends Fragment {
     private void setActivationButton(View view)
     {
         // Setting button
-        activationButton = view.findViewById(R.id.imageButton);
+        _activationButton = view.findViewById(R.id.imageButton);
         _buttonHandler = new Handler();
         scaleAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.scale_animation);
     
-        activationButton.setOnTouchListener(new View.OnTouchListener() {
+        _activationButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
@@ -133,16 +132,23 @@ public class HomeFragment extends Fragment {
         Runnable updateRunnable = new Runnable() {
             @Override
             public void run() {
-                // Format the time elapsed as desired (e.g., minutes:seconds)
-                String formattedTime = DateUtils.getTimeDifference(ShiftActivity.LastPressed, System.currentTimeMillis());
-            
-                // Update the TextView with the formatted time
-                _timeInShift.setText((ShiftActivity.LastPressed == 0) ? "" : formattedTime);
+                if (ShiftActivity.LastPressed == 0)
+                {
+                    // Update the TextView with the formatted time
+                    _timeInShift.setText("");
     
-                _startStopText.setText((ShiftActivity.LastPressed == 0) ? "Hold to start shift" : "Hold to end shift");
+                    _startStopText.setText("Hold to start shift");
+                }
+                else
+                {
+                    // Update the TextView with the formatted time
+                    _timeInShift.setText(DateUtils.getTimeDifference(ShiftActivity.LastPressed, System.currentTimeMillis()));
     
+                    _startStopText.setText("Hold to end shift");
+                    
+                }
                 // Schedule the next update
-                _timeHandler.postDelayed(this, 10);
+                _timeHandler.postDelayed(this, 100);
             }
         };
     
