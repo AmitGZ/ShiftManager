@@ -1,12 +1,17 @@
 package com.android.example.shiftmanagementapp;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,8 +35,10 @@ public class SignUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
         
+        ActionBar actionBar = getSupportActionBar();
+    
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        
+    
         // Initialize Firebase Authentication
         firebaseAuth = FirebaseAuth.getInstance();
         

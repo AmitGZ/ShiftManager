@@ -300,7 +300,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="file:$USER_HOME$/Library/Android/sdk/icons/material/materialicons/format_list_bulleted/baseline_format_list_bulleted_24.xml" />
+                                      <entry key="url" value="file:$USER_HOME$/Library/Android/sdk/icons/material/materialicons/help/baseline_help_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -310,7 +310,8 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputName" value="ic_baseline_format_list_bulleted_24" />
+                            <entry key="color" value="ffffff" />
+                            <entry key="outputName" value="ic_help" />
                           </map>
                         </option>
                       </PersistentState>

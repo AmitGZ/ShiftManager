@@ -1,11 +1,16 @@
 package com.android.example.shiftmanagementapp;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
@@ -46,8 +51,7 @@ public class ShiftActivity extends AppCompatActivity
         HourlyRate = 30.0;
         LastPressed = 0;
         
-        // Home as up button
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setActionBar();
     
         // Setting User database
         _firebaseAuth = FirebaseAuth.getInstance();
@@ -71,6 +75,31 @@ public class ShiftActivity extends AppCompatActivity
         setLogsQuery();
         
         setShiftQuery();
+    }
+    
+    private void setActionBar()
+    {
+        // Create a new ImageButton
+        ImageButton addButton = new ImageButton(this);
+        addButton.setImageResource(R.drawable.ic_help);
+        addButton.setBackgroundColor(Color.TRANSPARENT);
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("Click");
+            }
+        });
+    
+        // Set the ImageButton as a custom view in the action bar
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setCustomView(addButton, new ActionBar.LayoutParams(
+                ActionBar.LayoutParams.WRAP_CONTENT,
+                ActionBar.LayoutParams.WRAP_CONTENT,
+                Gravity.END | Gravity.CENTER_VERTICAL
+        ));
+    
+        // Home as up button
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
     
     private void openFragment(Fragment fragment) {
