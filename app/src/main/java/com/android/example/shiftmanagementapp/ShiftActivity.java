@@ -1,5 +1,6 @@
 package com.android.example.shiftmanagementapp;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -56,7 +57,7 @@ public class ShiftActivity extends AppCompatActivity
         // Setting User database
         _firebaseAuth = FirebaseAuth.getInstance();
         _user = _firebaseAuth.getCurrentUser();
-        _userDatabaseRef = FirebaseDatabase.getInstance().getReference().child("users").child(_user.getUid());;
+        _userDatabaseRef = FirebaseDatabase.getInstance("https://shiftmanagementapp-af57e-default-rtdb.europe-west1.firebasedatabase.app/").getReference().child("users").child(_user.getUid());;
         if (_user == null || _firebaseAuth == null || _userDatabaseRef == null)
         {
             Toast.makeText(this, "User authentication failed", Toast.LENGTH_SHORT).show();
@@ -86,7 +87,9 @@ public class ShiftActivity extends AppCompatActivity
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("Click");
+                // You can navigate to another activity upon successful login
+                Intent intent = new Intent(ShiftActivity.this, HelpActivity.class);
+                startActivity(intent);
             }
         });
     

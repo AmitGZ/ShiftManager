@@ -1,4 +1,5 @@
 package com.android.example.shiftmanagementapp;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,7 +30,9 @@ public class HomeFragment extends Fragment {
     private static final int DELAY_MILLIS = 1000;
     
     private ImageButton _activationButton;
-    private Handler _buttonHandler;
+
+    private Button _manualShiftButton;
+    private Handler _activationButtonHandler;
     private Handler _timeHandler;
     private Animation scaleAnimation;
     private TextView _startStopText;
@@ -54,6 +58,8 @@ public class HomeFragment extends Fragment {
         setActivationButton(view);
     
         setTimeHandler();
+
+        setManuallyShiftButton(view);
         
         // Inflate the layout for this fragment
         return view;
@@ -101,7 +107,7 @@ public class HomeFragment extends Fragment {
     {
         // Setting button
         _activationButton = view.findViewById(R.id.imageButton);
-        _buttonHandler = new Handler();
+        _activationButtonHandler = new Handler();
         scaleAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.scale_animation);
     
         _activationButton.setOnTouchListener(new View.OnTouchListener() {
@@ -110,16 +116,29 @@ public class HomeFragment extends Fragment {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
                         // Start the delayed activation check
-                        _buttonHandler.postDelayed(activationRunnable, DELAY_MILLIS);
+                        _activationButtonHandler.postDelayed(activationRunnable, DELAY_MILLIS);
                         v.startAnimation(scaleAnimation);
                         return true;
                     case MotionEvent.ACTION_UP:
                         // Cancel the delayed activation check
-                        _buttonHandler.removeCallbacks(activationRunnable);
+                        _activationButtonHandler.removeCallbacks(activationRunnable);
                         v.clearAnimation();
                         return true;
                 }
                 return false;
+            }
+        });
+    }
+
+    private void setManuallyShiftButton(View view)
+    {
+        // Setting button
+        _manualShiftButton = view.findViewById(R.id.addShiftButton);
+        _manualShiftButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), AddShiftActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -155,4 +174,6 @@ public class HomeFragment extends Fragment {
         // Start the initial update
         _timeHandler.post(updateRunnable);
     }
+
 }
+

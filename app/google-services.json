@@ -2,7 +2,8 @@
   "project_info": {
     "project_number": "609857395899",
     "project_id": "shiftmanagementapp-af57e",
-    "storage_bucket": "shiftmanagementapp-af57e.appspot.com"
+    "storage_bucket": "shiftmanagementapp-af57e.appspot.com",
+    "databaseURL": "https://shiftmanagementapp-af57e-default-rtdb.europe-west1.firebasedatabase.app/"
   },
   "client": [
     {
