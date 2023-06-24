@@ -1,5 +1,6 @@
 package com.android.example.shiftmanagementapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
@@ -7,13 +8,18 @@ import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.Calendar;
 
@@ -29,6 +35,8 @@ public class AddShiftActivity extends AppCompatActivity {
     private EditText endDateEditText;
     private Button submitButton;
 
+    private TextView errorText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +50,7 @@ public class AddShiftActivity extends AppCompatActivity {
         endTimeEditText = findViewById(R.id.endTimeEditText);
         endDateEditText = findViewById(R.id.endDateEditText);
         submitButton = findViewById(R.id.submitButton);
+        errorText = findViewById(R.id.errorLabel);
 
         // Initialize Calendar instances
         startDateTime = Calendar.getInstance();
@@ -81,14 +90,19 @@ public class AddShiftActivity extends AppCompatActivity {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(isDateTimeEmpty())
+                {
+                    errorText.setText("You must fill all the fields to add shift");
+                    return;
+                }
                 System.out.println("Start: " + startDateTime.getTimeInMillis());
                 System.out.println("end: " + endDateTime.getTimeInMillis());
-                if (isValidDateTime(endDateTime,startDateTime)) {
-                    // Perform your submit logic here
-                    Toast.makeText(AddShiftActivity.this, "Good", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(AddShiftActivity.this, "Bad", Toast.LENGTH_SHORT).show();
+                if (!isValidDateTime(endDateTime,startDateTime)) {
+                    errorText.setText("Shift can not be ended before started");
+                    return;
                 }
+                // TODO -  Insert shift to database
+                errorText.setText("");
             }
         });
     }
@@ -146,6 +160,18 @@ public class AddShiftActivity extends AppCompatActivity {
 
     private boolean isValidDateTime(Calendar endDateTime,Calendar startDateTime) {
         return endDateTime.after(startDateTime);
+    }
+
+    private boolean isDateTimeEmpty() {
+        if(startDateEditText.getText().toString().isEmpty())
+            return true;
+        if(startTimeEditText.getText().toString().isEmpty())
+            return  true;
+        if(endDateEditText.getText().toString().isEmpty())
+            return true;
+        if(endTimeEditText.getText().toString().isEmpty())
+            return true;
+        return false;
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

@@ -81,6 +81,17 @@
         tools:layout_editor_absoluteY="32dp"
         tools:ignore="MissingConstraints" />
 
+    <TextView
+        android:id="@+id/errorLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/design_default_color_error"
+        android:textSize="20dp"
+        android:layout_margin="10dp"
+        android:text=""
+        android:textAlignment="center"
+        />
+
     <Button
         android:id="@+id/submitButton"
         android:layout_width="wrap_content"
