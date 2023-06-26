@@ -22,6 +22,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -138,6 +139,8 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), AddShiftActivity.class);
+                intent.putExtra("userDatabaseRef",_userDatabaseRef.toString());
+                intent.putExtra("hourlyRate",(double) ShiftActivity.HourlyRate);
                 startActivity(intent);
             }
         });

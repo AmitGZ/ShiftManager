@@ -20,6 +20,8 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Calendar;
 
@@ -37,12 +39,26 @@ public class AddShiftActivity extends AppCompatActivity {
 
     private TextView errorText;
 
+    private DatabaseReference _userDatabaseRef;
+
+    private double _hourlyRate;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_shift);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        // Initialize DatabaseReference
+        String databaseRefString = getIntent().getStringExtra("userDatabaseRef");
+        System.out.println("DatabaseRef : " + databaseRefString);
+
+        // TODO - FIX: Raising an exception.
+        _userDatabaseRef = FirebaseDatabase.getInstance().getReferenceFromUrl(databaseRefString);
+
+        // Initialize HourlyRate
+        _hourlyRate = getIntent().getDoubleExtra("hourlyRate",30);
+        System.out.println("Hourly : " + _hourlyRate);
 
         // Initialize views
         startTimeEditText = findViewById(R.id.startTimeEditText);
@@ -103,6 +119,32 @@ public class AddShiftActivity extends AppCompatActivity {
                 }
                 // TODO -  Insert shift to database
                 errorText.setText("");
+/*
+                // Create a new data object with relevant information
+                ShiftData shiftData = new ShiftData(startDateTime.getTimeInMillis(), endDateTime.getTimeInMillis(), ShiftActivity.HourlyRate);
+
+                // Save the data to the Firebase Realtime Database
+                _userDatabaseRef.child("logs").push().setValue(shiftData)
+                        .addOnSuccessListener(new OnSuccessListener<Void>()
+                        {
+                            @Override
+                            public void onSuccess(Void aVoid)
+                            {
+                                // Data saved successfully
+                                Toast.makeText(AddShiftActivity.this, "Data saved!", Toast.LENGTH_SHORT).show();
+                                //TODO - Go back to HomeFragment
+                            }
+                        }).addOnFailureListener(new OnFailureListener()
+                        {
+                            @Override
+                            public void onFailure(@NonNull Exception e)
+                            {
+                                // Error occurred while saving data
+                                Toast.makeText(AddShiftActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                Log.e("Firebase", "Data save failed", e);
+                            }
+                        });
+                */
             }
         });
     }
