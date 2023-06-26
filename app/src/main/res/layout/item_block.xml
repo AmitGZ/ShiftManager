@@ -20,7 +20,7 @@
         android:id="@+id/removeBlock"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:background="@drawable/ic_baseline_close_24"
+        android:background="@drawable/ic_baseline_edit_24"
         android:layout_alignParentRight="true"
         android:textSize="24sp" />
     </LinearLayout>

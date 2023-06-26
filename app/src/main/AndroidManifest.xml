@@ -15,6 +15,9 @@
         android:theme="@style/Theme.ShiftManagementApp"
         tools:targetApi="31">
         <activity
+            android:name=".EditShiftActivity"
+            android:exported="false" />
+        <activity
             android:name=".AddShiftActivity"
             android:exported="false" />
         <activity

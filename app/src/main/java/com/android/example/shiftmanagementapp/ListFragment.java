@@ -1,5 +1,6 @@
 package com.android.example.shiftmanagementapp;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -68,22 +69,19 @@ public class ListFragment extends Fragment {
             @Override
             public void onClick(View v)
             {
-                _userDatabaseRef.child("logs").child(shiftData.getKey()).removeValue(new DatabaseReference.CompletionListener() {
-                    @Override
-                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                        if (databaseError != null) {
-                            System.out.println("Data could not be removed. " + databaseError.getMessage());
-                        } else {
-                            System.out.println("Data removed successfully.");
-                            refreshDataList();
-                        }
-                    }
-                });
+                Intent editShiftIntent = new Intent(getActivity(), EditShiftActivity.class);
+                editShiftIntent.putExtra("hourlyRate",(double) ShiftActivity.HourlyRate);
+                editShiftIntent.putExtra("shiftId",   (String) shiftData.getKey());
+                editShiftIntent.putExtra("shiftStart",(long)   shiftData.getStart());
+                editShiftIntent.putExtra("shiftEnd",  (long)   shiftData.getEnd());
+                startActivity(editShiftIntent);
+                
+                refreshDataList();
             }
         });
     }
     
-    private void refreshDataList()
+    public void refreshDataList()
     {
         double totalSalary = 0.0D;
         _container.removeAllViews();

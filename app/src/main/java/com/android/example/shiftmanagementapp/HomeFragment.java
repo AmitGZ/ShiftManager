@@ -139,7 +139,6 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), AddShiftActivity.class);
-                intent.putExtra("userDatabaseRef",_userDatabaseRef.toString());
                 intent.putExtra("hourlyRate",(double) ShiftActivity.HourlyRate);
                 startActivity(intent);
             }

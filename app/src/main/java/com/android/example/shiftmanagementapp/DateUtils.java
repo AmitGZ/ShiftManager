@@ -13,7 +13,7 @@ class DateUtils {
     }
     
     public static String formatDateTime(long timestamp) {
-        return dateFormat.format(new Date(timestamp + 50823000 + 3600000));
+        return dateFormat.format(new Date(timestamp));
     }
     
     public static String getTimeDifference(long start, long end) {

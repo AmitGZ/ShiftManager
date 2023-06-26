@@ -32,7 +32,7 @@ public class ShiftActivity extends AppCompatActivity
 {
     private FirebaseAuth _firebaseAuth;
     private FirebaseUser _user;
-    private DatabaseReference _userDatabaseRef;
+    public static DatabaseReference _userDatabaseRef;
     
     private HomeFragment _homeFragment;
     private ListFragment _listFragment;
