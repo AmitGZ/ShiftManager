@@ -32,6 +32,7 @@ public class ListFragment extends Fragment {
     
     private LinearLayout _container;
     private TextView _salaryText;
+    private static final int CHILD_ACTIVITY_REQUEST_CODE = 1;
     
     private final FirebaseUser _user;
     private final DatabaseReference _userDatabaseRef;
@@ -74,12 +75,22 @@ public class ListFragment extends Fragment {
                 editShiftIntent.putExtra("shiftId",   (String) shiftData.getKey());
                 editShiftIntent.putExtra("shiftStart",(long)   shiftData.getStart());
                 editShiftIntent.putExtra("shiftEnd",  (long)   shiftData.getEnd());
-                startActivity(editShiftIntent);
+                startActivityForResult(editShiftIntent, CHILD_ACTIVITY_REQUEST_CODE);
                 
                 refreshDataList();
             }
         });
     }
+    
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        
+        if (requestCode == CHILD_ACTIVITY_REQUEST_CODE) {
+            refreshDataList();
+        }
+    }
+    
     
     public void refreshDataList()
     {

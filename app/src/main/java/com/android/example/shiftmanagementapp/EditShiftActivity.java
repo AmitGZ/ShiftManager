@@ -60,6 +60,8 @@ public class EditShiftActivity extends ModifyShiftActivity {
                 if(addShift())
                 {
                     deleteShift();
+                    setResult(EditShiftActivity.RESULT_OK);
+                    finish();
                 }
             }
         });
@@ -92,6 +94,8 @@ public class EditShiftActivity extends ModifyShiftActivity {
             public void onClick(View v)
             {
                 deleteShift();
+                setResult(EditShiftActivity.RESULT_OK);
+                finish();
             }
         });
     }
