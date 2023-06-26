@@ -7,15 +7,19 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -167,17 +171,27 @@ public class ListFragment extends Fragment {
         popupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
         
         // Get references to the Yes and No buttons
-        Button yesButton = popupView.findViewById(R.id.yesButton);
-        Button noButton = popupView.findViewById(R.id.noButton);
-        
+        Button yesButton = popupView.findViewById(R.id.sendButton);
+        Button noButton = popupView.findViewById(R.id.exitButton);
+        EditText editTextPhoneNumber = popupView.findViewById(R.id.editTextPhoneNumber);
+    
+        // Replace the following array with your desired country codes
+        String[] countryCodes = {"+972", "+1", "+91", "+44", "+81"};
+        Spinner spinnerCountryCode = popupView.findViewById(R.id.spinnerCountryCode);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(popupView.getContext(), android.R.layout.simple_spinner_item, countryCodes);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerCountryCode.setAdapter(adapter);
+    
         // Set click listeners for the Yes and No buttons
         yesButton.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View v) {
-                // Handle Yes button click
-                // ...
-                // Dismiss the popup window and remove the overlay
+                String prefix = spinnerCountryCode.getSelectedItem().toString();
+                String phoneNumber = editTextPhoneNumber.getText().toString();
+                if(phoneNumber.startsWith("0"))
+                    phoneNumber = phoneNumber.substring(1);
+                sendSMS(prefix + phoneNumber, "Hello this is from Shift Manager App");
                 popupWindow.dismiss();
                 rootView.setForeground(null);
             }
@@ -195,8 +209,22 @@ public class ListFragment extends Fragment {
             }
         });
     }
-
-
     
+    
+    public void sendSMS(String phoneNo, String msg)
+    {
+        try
+        {
+            SmsManager smsManager = SmsManager.getDefault();
+            smsManager.sendTextMessage(phoneNo, null, msg, null, null);
+            //Toast.makeText(getApplicationContext(), "Message Sent",
+            //        Toast.LENGTH_LONG).show();
+        } catch (Exception ex)
+        {
+            //Toast.makeText(getApplicationContext(),ex.getMessage().toString(),
+            //        Toast.LENGTH_LONG).show();
+            ex.printStackTrace();
+        }
+    }
     
 }
