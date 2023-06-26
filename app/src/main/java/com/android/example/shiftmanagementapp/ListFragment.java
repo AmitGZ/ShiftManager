@@ -49,7 +49,9 @@ public class ListFragment extends Fragment {
     
     private final FirebaseUser _user;
     private final DatabaseReference _userDatabaseRef;
-    
+
+    private double totalSalary = 0.0D;
+
     public ListFragment (@NotNull FirebaseUser user, @NotNull DatabaseReference databaseRef)
     {
         _user = user;
@@ -86,6 +88,8 @@ public class ListFragment extends Fragment {
     {
         View blockView = getLayoutInflater().inflate(R.layout.item_block, _container, false);
         TextView textView = blockView.findViewById(R.id.textBlock);
+        textView.setTextSize(15);
+
         textView.setText("Start: " + DateUtils.formatDateTime(shiftData.getStart()) + "\n" + "End:   " + DateUtils.formatDateTime(shiftData.getEnd()));
         _container.addView(blockView);
     
@@ -119,14 +123,14 @@ public class ListFragment extends Fragment {
     
     public void refreshDataList()
     {
-        double totalSalary = 0.0D;
+        totalSalary = 0;
         _container.removeAllViews();
         for (int i = 0; i < ShiftActivity.DataList.size(); i++)
         {
             addBlock(ShiftActivity.DataList.get(i));
             totalSalary += ShiftActivity.DataList.get(i).getShiftSalary();
         }
-        _salaryButton.setText("Salary: " + String.format("%.2f", totalSalary) + " $");
+        _salaryButton.setText("Salary: " + String.format("%.2f", totalSalary) + " ₪");
     }
     
     private void showPopupWindow() {
@@ -191,7 +195,7 @@ public class ListFragment extends Fragment {
                 String phoneNumber = editTextPhoneNumber.getText().toString();
                 if(phoneNumber.startsWith("0"))
                     phoneNumber = phoneNumber.substring(1);
-                sendSMS(prefix + phoneNumber, "Hello this is from Shift Manager App");
+                sendSMS(prefix + phoneNumber, "Your Salary is " + String.format("%.2f", totalSalary) + "₪");
                 popupWindow.dismiss();
                 rootView.setForeground(null);
             }
@@ -217,12 +221,10 @@ public class ListFragment extends Fragment {
         {
             SmsManager smsManager = SmsManager.getDefault();
             smsManager.sendTextMessage(phoneNo, null, msg, null, null);
-            //Toast.makeText(getApplicationContext(), "Message Sent",
-            //        Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), "Message Sent", Toast.LENGTH_LONG).show();
         } catch (Exception ex)
         {
-            //Toast.makeText(getApplicationContext(),ex.getMessage().toString(),
-            //        Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(),ex.getMessage().toString(), Toast.LENGTH_LONG).show();
             ex.printStackTrace();
         }
     }
