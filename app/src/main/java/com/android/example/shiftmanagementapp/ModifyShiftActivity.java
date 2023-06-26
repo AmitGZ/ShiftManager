@@ -48,16 +48,14 @@ public class ModifyShiftActivity extends AppCompatActivity {
     
         startDateTime = Calendar.getInstance();
         endDateTime = Calendar.getInstance();
-        startDateTime.setTimeZone(TimeZone.getTimeZone("GMT+2"));
-        endDateTime.setTimeZone(TimeZone.getTimeZone("GMT+2"));
+        
+        TimeZone timeZone = TimeZone.getTimeZone("GMT+2");
+        startDateTime.setTimeZone(timeZone);
+        endDateTime.setTimeZone(timeZone);
     }
     
     protected void setStartAndEndEdit()
     {
-        // Initialize Calendar instances
-        startDateTime = Calendar.getInstance();
-        endDateTime = Calendar.getInstance();
-        
         // Set click listeners for start date and time pickers
         startDateEditText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,14 +87,15 @@ public class ModifyShiftActivity extends AppCompatActivity {
         });
     }
     
-    protected void addShift()
+    protected boolean addShift()
     {
         if(!isDateTimeEmpty())
         {
-            if (isValidDateTime(endDateTime,startDateTime))
+            if (isValidDateTime(endDateTime, startDateTime))
             {
                 ShiftActivity._userDatabaseRef.child("logs").push().setValue(new ShiftData(startDateTime.getTimeInMillis(), endDateTime.getTimeInMillis(), _hourlyRate));
                 onBackPressed();
+                return true;
             }
             else
             {
@@ -107,6 +106,7 @@ public class ModifyShiftActivity extends AppCompatActivity {
         {
             errorText.setText("You must fill all the fields to add shift");
         }
+        return false;
     }
     
     private void showDatePicker(final EditText editText, @NonNull final Calendar dateTime) {

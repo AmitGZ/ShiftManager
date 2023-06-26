@@ -57,8 +57,10 @@ public class EditShiftActivity extends ModifyShiftActivity {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addShift();
-                deleteShift();
+                if(addShift())
+                {
+                    deleteShift();
+                }
             }
         });
     }

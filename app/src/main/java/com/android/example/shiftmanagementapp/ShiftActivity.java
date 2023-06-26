@@ -158,7 +158,7 @@ public class ShiftActivity extends AppCompatActivity
     
     private void setLogsQuery()
     {
-        Query query = _userDatabaseRef.child("logs").orderByChild("timestamp");
+        Query query = _userDatabaseRef.child("logs").orderByChild("start");
     
         query.addValueEventListener(new ValueEventListener() {
             @Override

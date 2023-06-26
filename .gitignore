@@ -3,7 +3,7 @@
 build/
 
 ## Local configuration file (sdk path, etc)
-#local.properties
+local.properties
 
 ## Log/OS Files
 *.log
@@ -23,14 +23,14 @@ deploymentTargetDropDown.xml
 render.experimental.xml
 
 ## Keystore files
-#*.jks
-#*.keystore
+*.jks
+*.keystore
 
 ## Google Services (e.g. APIs or Firebase)
 ## Return ignore after publishing
-##google-services.json
+google-services.json
 
 ## Android Profiling
-#*.hprof
+*.hprof
 
 *.DS_Store
