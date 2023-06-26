@@ -1,11 +1,15 @@
 package com.android.example.shiftmanagementapp;
 
+import static java.lang.Double.parseDouble;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -16,6 +20,7 @@ public class EditShiftActivity extends ModifyShiftActivity {
     
     private String _shiftId;
     private Button _deleteButton;
+    private EditText _hourlyRateInput;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +43,11 @@ public class EditShiftActivity extends ModifyShiftActivity {
         submitButton = findViewById(R.id.submitButton);
         errorText = findViewById(R.id.errorLabel);
         _deleteButton = findViewById(R.id.deleteButton);
-        
+    
+        _hourlyRateInput = findViewById(R.id.hourlyRate);
+        _hourlyRateInput.setFilters(new InputFilter[] { new InputFilter.AllCaps(), new InputFilter.LengthFilter(10) });
+        _hourlyRateInput.setText(String.valueOf(_hourlyRate));
+    
         setStartAndEndEdit();
         
         updateDateTimeTextDate(startDateEditText, startDateTime);
@@ -57,12 +66,10 @@ public class EditShiftActivity extends ModifyShiftActivity {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(addShift())
-                {
-                    deleteShift();
-                    setResult(EditShiftActivity.RESULT_OK);
-                    finish();
-                }
+                ShiftActivity._userDatabaseRef.child("logs").child(_shiftId)
+                        .setValue(new ShiftData(startDateTime.getTimeInMillis(), endDateTime.getTimeInMillis(), Double.parseDouble(_hourlyRateInput.getText().toString())));
+                setResult(EditShiftActivity.RESULT_OK);
+                finish();
             }
         });
     }

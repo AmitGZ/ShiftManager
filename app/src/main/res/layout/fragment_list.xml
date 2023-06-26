@@ -18,15 +18,14 @@
 
     </ScrollView>
 
-    <TextView
+    <Button
         android:id="@+id/salary"
         android:layout_width="wrap_content"
+        android:drawableStart="@drawable/ic_back"
         android:layout_height="wrap_content"
         android:text="Salary"
-        android:textSize="30sp"
-        android:background="#6200EE"
-        android:textColor="#FFFFFF"
-        android:padding="10dp"
+        android:textSize="25sp"
+        android:padding="5dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="16dp" />
 

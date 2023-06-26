@@ -103,6 +103,7 @@ public class ShiftActivity extends AppCompatActivity
     
         // Home as up button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_login_24);
     }
     
     private void openFragment(Fragment fragment) {

@@ -140,6 +140,7 @@ public class ModifyShiftActivity extends AppCompatActivity {
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                         dateTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
                         dateTime.set(Calendar.MINUTE, minute);
+                        dateTime.set(Calendar.SECOND, 0);
                         updateDateTimeTextTime(editText, dateTime);
                     }
                 },
