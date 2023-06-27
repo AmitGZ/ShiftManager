@@ -1,4 +1,4 @@
-package com.android.example.shiftmanagementapp;
+package com.android.example.shiftmanagementapp.Fragments;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -13,6 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.android.example.shiftmanagementapp.Activities.ShiftActivity;
+import com.android.example.shiftmanagementapp.R;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

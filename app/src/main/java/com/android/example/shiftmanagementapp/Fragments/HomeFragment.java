@@ -1,4 +1,4 @@
-package com.android.example.shiftmanagementapp;
+package com.android.example.shiftmanagementapp.Fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,11 +18,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.android.example.shiftmanagementapp.Activities.AddShiftActivity;
+import com.android.example.shiftmanagementapp.Activities.ShiftActivity;
+import com.android.example.shiftmanagementapp.R;
+import com.android.example.shiftmanagementapp.Utils.DateUtils;
+import com.android.example.shiftmanagementapp.Utils.ShiftData;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import org.jetbrains.annotations.NotNull;
 

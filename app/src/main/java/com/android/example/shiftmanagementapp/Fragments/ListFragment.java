@@ -1,5 +1,4 @@
-package com.android.example.shiftmanagementapp;
-import android.app.Activity;
+package com.android.example.shiftmanagementapp.Fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -8,7 +7,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.telephony.SmsManager;
-import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +16,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,17 +26,15 @@ import androidx.annotation.RequiresApi;
 import androidx.core.graphics.ColorUtils;
 import androidx.fragment.app.Fragment;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.android.example.shiftmanagementapp.Activities.EditShiftActivity;
+import com.android.example.shiftmanagementapp.Activities.ShiftActivity;
+import com.android.example.shiftmanagementapp.R;
+import com.android.example.shiftmanagementapp.Utils.DateUtils;
+import com.android.example.shiftmanagementapp.Utils.ShiftData;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 
 import org.jetbrains.annotations.NotNull;
-import org.w3c.dom.Text;
 
 public class ListFragment extends Fragment {
     

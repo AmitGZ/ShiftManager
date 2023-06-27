@@ -1,4 +1,4 @@
-package com.android.example.shiftmanagementapp;
+package com.android.example.shiftmanagementapp.Activities;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -15,6 +15,11 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import com.android.example.shiftmanagementapp.Fragments.HomeFragment;
+import com.android.example.shiftmanagementapp.Fragments.ListFragment;
+import com.android.example.shiftmanagementapp.R;
+import com.android.example.shiftmanagementapp.Fragments.SettingsFragment;
+import com.android.example.shiftmanagementapp.Utils.ShiftData;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

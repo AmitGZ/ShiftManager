@@ -1,9 +1,11 @@
-package com.android.example.shiftmanagementapp;
+package com.android.example.shiftmanagementapp.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+
+import com.android.example.shiftmanagementapp.R;
 
 public class OpeningScreen extends AppCompatActivity {
 

@@ -1,8 +1,4 @@
-package com.android.example.shiftmanagementapp;
-
-import static java.lang.Double.parseDouble;
-
-import androidx.appcompat.app.AppCompatActivity;
+package com.android.example.shiftmanagementapp.Activities;
 
 import android.os.Bundle;
 import android.text.InputFilter;
@@ -11,10 +7,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.android.example.shiftmanagementapp.R;
+import com.android.example.shiftmanagementapp.Utils.ShiftData;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-
-import java.util.Calendar;
 
 public class EditShiftActivity extends ModifyShiftActivity {
     

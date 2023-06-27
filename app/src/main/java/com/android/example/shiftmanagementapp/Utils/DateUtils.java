@@ -1,10 +1,10 @@
-package com.android.example.shiftmanagementapp;
+package com.android.example.shiftmanagementapp.Utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
-class DateUtils {
+public class DateUtils {
     private static final SimpleDateFormat dateFormat;
     
     static {

@@ -1,4 +1,4 @@
-package com.android.example.shiftmanagementapp;
+package com.android.example.shiftmanagementapp.Utils;
 
 public class ShiftData {
     private long _start;
