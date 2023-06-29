@@ -69,7 +69,7 @@ public class SignUpActivity extends AppCompatActivity {
                             setUserUsername(username);
                             Toast.makeText(SignUpActivity.this, "Sign-up successful! User ID: " + user.getUid(), Toast.LENGTH_SHORT).show();
                             
-                            // You can also navigate to another activity here if needed
+                            onBackPressed();
                         } else {
                             // Sign-up failed
                             Exception exception = task.getException();
